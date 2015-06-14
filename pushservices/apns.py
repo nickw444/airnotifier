@@ -83,6 +83,9 @@ class PayLoad(object):
         else:
             item['alert'] = self.alert
 
+        if 'content-available' in self.customparams:
+            item['content-available'] = self.customparams.pop('content-available')
+
         payload = {'aps': item}
         if self.customparams != None:
             payload = dict(payload.items() + self.customparams.items())
