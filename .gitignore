@@ -3,3 +3,4 @@ logging.ini
 *.pyc
 .idea
 venv*
+pemdir*
