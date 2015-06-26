@@ -77,18 +77,26 @@ class PayLoad(object):
             alertlength = alertlength - 11 - len(str(self.badge))
             item['badge'] = int(self.badge)
 
+        if self.customparams and 'content-available' in self.customparams:
+            # remove ,"content-available":""
+            value = self.customparams.pop('content-available')
+            alertlength = alertlength - 23 - len(str(value))
+            item['content-available'] = value
+
         if len(self.alert) > alertlength:
             alertlength = alertlength - 3
             item['alert'] = self.alert[:alertlength] + '...'
         else:
             item['alert'] = self.alert
 
-        if 'content-available' in self.customparams:
-            item['content-available'] = self.customparams.pop('content-available')
+        print(self.customparams)
+        print(item)
 
         payload = {'aps': item}
         if self.customparams != None:
             payload = dict(payload.items() + self.customparams.items())
+
+        print(payload)
         return payload
 
     def json(self):
