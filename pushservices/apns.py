@@ -222,10 +222,11 @@ class APNClient(PushService):
         try:
             self.remote_stream.close()
             self.sock.close()
-            if self.reconnect:
-                self.connect()
         except Exception, ex:
             raise ex
+        finally:
+            if self.reconnect:
+                self.connect()
 
     def _on_remote_connected(self):
         self.connected = True
