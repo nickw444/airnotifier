@@ -212,12 +212,14 @@ class APNClient(PushService):
             255     | None
         """
         self.connected = False
-        if len(data) != 6:
-            logging.error('response must be a 6-byte binary string. Instead we got: {}'.format(data))
-        else:
+
+        try:
             (command, statuscode, identifier) = struct.unpack_from('!bbI', data, 0)
             logging.error('%s[%d] CMD: %s Status: %s ID: %s', self.appname, self.instanceid, command, status_table[statuscode], identifier)
             self.errors = "%s (ID: %s)" % (status_table[statuscode], identifier)
+        except Exception as e:
+            logging.error('response must be a 6-byte binary string. Instead we got: {}'.format(data))
+            logging.error('Unpacking {}. Length: {}'.format(data, len(data)))
 
         try:
             self.remote_stream.close()
